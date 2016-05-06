@@ -6,7 +6,9 @@ require.config({
 		jqueryUI:'jquery-ui-1.9.2.min'
 	}
 });
-require(['jquery','jqueryUI','widget','window'],function($,$UI,widget,w){
+
+require(['jquery','jqueryUI','widget','window'], function($,$UI,widget,w){
+
 	$('#a').click(function(){
 		// alert窗口
 		var win = new w.Window();

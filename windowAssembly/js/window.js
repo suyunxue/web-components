@@ -28,9 +28,10 @@ define(['jquery','widget'],function  ($,widget) {
 		this.handlers = {}
 	}
 
-	Window.prototype = $.extend({},new widget.Widget(),{
+	Window.prototype = $.extend({}, new widget.Widget(), {
+
 		// 统一接口，设计生命周期
-		renderUI:function(){
+		renderUI: function () {
 			var footerContent = "";
 			switch(this.cfg.winType){
 				case "alert":
@@ -69,7 +70,7 @@ define(['jquery','widget'],function  ($,widget) {
 		},
 
 		//绑定事件自定义事件·
-		bindUI:function(){
+		bindUI: function(){
 			var that = this;
 			this.boundingBox.delegate('.window_footer input','click',function(){
 				that.fire('alert');
@@ -104,7 +105,7 @@ define(['jquery','widget'],function  ($,widget) {
 			}
 		},
 
-		syncUI:function(){
+		syncUI: function(){
 			this.boundingBox.css({
 				width:this.cfg.width + 'px',
 				height:this.cfg.height + 'px',
@@ -122,20 +123,23 @@ define(['jquery','widget'],function  ($,widget) {
 				}
 			}
 		},
-		destructor:function(){
+
+		destructor: function(){
 				this._mask && this._mask.remove();
 		},
-		alert:function(cfg){
+
+		alert: function(cfg){
 			$.extend(this.cfg,cfg,{winType:'alert'});
 			this.render();
 			return this;
 		},
 	
-		confirm:function(cfg){
+		confirm: function(cfg){
 			$.extend(this.cfg,cfg,{winType:'confirm'});
 			this.render();
 			return this;
 		},
+		
 		prompt:function(cfg){
 			$.extend(this.cfg,cfg,{winType:'prompt'});
 			this.render();
