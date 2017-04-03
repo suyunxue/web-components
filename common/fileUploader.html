@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<a href="http://www.jianshu.com/p/374e9b9d1fb1">参考资料</a>
+<ul>
+    <li>先来实现第一种方案</li>
+    <li>使用form和iframe实现</li>
+</ul>
+使用form表单提交，为防止刷新使用iframe，在上传文件的时候，动态创建form标签和iframe然后把from的target指向这个框，
+也就是在那个页面里面刷新
+<input type="" name="">
+<br>
+<br>
+<br>
+<input type="file" name="" id="j-upload-input">
+
+<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$('#j-upload-input').on('change', function (e) {
+    // 动态创建一个form元素
+    createUploadForm();
+    // 创建一个iframe元素
+    createIframe();
+
+    var form = $('#j-upload-form');
+    var iframe = $('#j-upload-iframe');
+    form.attr('target', 'j-upload-iframe');
+    form.submit();
+});
+
+function createUploadForm() {
+
+    // 创建form元素，把input元素放在里面去
+    var form = $('<form action="" method="POST" id="j-upload-form" enctype="multipart/form-data"></form>');
+    var input = $('#j-upload-input');
+    form.append(input);
+    form.appendTo('body');
+    return form;
+}
+
+function createIframe() {
+    var iframe = $('<iframe id="j-upload-iframe" name="j-upload-iframe"></iframe>');
+    iframe.appendTo('body');
+    return iframe;
+}
+
+
+</script>
+</body>
+</html>
