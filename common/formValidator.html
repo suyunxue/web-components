@@ -22,6 +22,13 @@
 <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
 <script>
+
+/**
+ * 现在是出版，只能校验必填项，后期再进行添加
+ * 大概思路就是这样
+ * @param {string} form  要校验的表单选择器
+ * @param {Object} rules 自定义校验规则
+ */
 function Validate(form, rules) {
     this.form = $(form);
     this.rules = rules || {
