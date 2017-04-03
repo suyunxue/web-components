@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>浮层基本实现</title>
+    <style>
+        .focus {
+            /* outline: none; */
+        }
+    </style>
+</head>
+<body>
+
+<input type="text" name="" class="focus">
+<button class="test">测试</button>
+<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $('.test').on('click', function () {
+        $('.focus').focus();
+    })
+</script>
+</body>
+</html>

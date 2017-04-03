@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .mask {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: #ccc;
+            opacity: .5;
+        }
+        .main {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            margin-left: -150px;
+            width: 300px;
+            background: #fff;
+            text-align: center;
+        }
+        .msg {
+            line-height: 100px;
+        }
+        .alert-btn {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<button class="test">dsa</button>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+<div class="p">展位费</div>
+
+<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        var Alert = function (msg) {
+            this.msg = msg || '提示信息';
+            this.html = '<div class="alert">'
+                       + '<div class="mask"></div>'
+                       + '<div class="main">'
+                       + '<div class="msg">' + this.msg + '</div>'
+                       + '<button class="alert-btn">确定</button>'
+                       + '</div>'
+                      + '</div>';
+            this.init();
+        }
+
+
+        Alert.prototype = {
+            constructor: Alert,
+
+            init: function () {
+                this.show();
+                this.bindEvent();
+            },
+
+            bindEvent: function () {
+                var me = this;
+                $('.alert-btn, .mask').on('click', function () {
+                    me.destory();
+                });
+            },
+
+            show: function () {
+                $('body').append(this.html);
+            },
+
+            destory: function () {
+                $('.alert').remove();
+            }
+        }
+
+        $('.test').on('click', function () {
+            var alert = new Alert(); // 参数传入提示信息
+        })
+    </script>
+</body>
+</html>

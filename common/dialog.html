@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .mask {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: #000;
+            opacity: .6;
+        }
+        .main {
+            position: absolute;
+            top: 100px;
+            background: #fff;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<button class="test">dianwo</button>
+
+
+<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        var Dialog = function (html) {
+            this.html = '<div class="Dialog">'
+                       +    '<div class="mask"></div>'
+                       +    '<div class="main">' + html + '</div>'
+                       + '</div>';
+
+            this.init();
+        };
+
+        Dialog.prototype = {
+            constructor: Dialog,
+
+            init: function () {
+                this.show();
+                this.bindEvent();
+                this.setCenter();
+            },
+
+            setCenter: function () {
+                var width = $('.main').width();
+
+                $('.main').css({
+                    left: '50%',
+                    marginLeft: -(width/2)
+                });
+            },
+
+            bindEvent: function () {
+                var me = this;
+                $('.Dialog-btn, .mask').on('click', function () {
+                    me.destory();
+                });
+            },
+
+            show: function () {
+                $('body').append(this.html);
+            },
+
+            destory: function () {
+                $('.Dialog').remove();
+            }
+        }
+
+        $('.test').on('click', function () {
+            var html = '<h1>hahahahahhhhhhhhhhhhhhhhhhhhh</h1>'
+            var dialog = new Dialog(html);
+        })
+    </script>
+</body>
+</html>

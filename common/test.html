@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .alert-btn {
+            width: 100px;
+            height: 100px;
+            background: #f00;
+        }
+    </style>
+</head>
+<body>
+<div class="alert">
+    <div class="mask"></div>
+    <div class="main">
+        <div class="msg">提示信息</div>
+        <button class="alert-btn">确定</button>
+    </div>
+</div>
+<div class="test">
+    <button class="body">diainji
+    </button>
+    <div class="child"></div>
+    <div class="hhh" >fdsfdsf</div>
+</div>
+<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script>
+$('.body').on('click', function () {
+    $('.alert-btn').css({
+        display: 'block',
+        width: '1000',
+        property2: 'value2'
+    });
+})
+</script>
+</body>
+</html>
