@@ -4,35 +4,22 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <style>
-        .alert-btn {
-            width: 100px;
-            height: 100px;
-            background: #f00;
-        }
+    .test {
+        height: 100px;
+        background-image: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1491473624956&di=5b3e6d9aa94a916457c7aa937efefd86&imgtype=0&src=http%3A%2F%2Fpic18.nipic.com%2F20111206%2F2256974_131330799000_2.jpg);
+        background: rgba(0, 0, 0, .5)
+    }
     </style>
 </head>
 <body>
-<div class="alert">
-    <div class="mask"></div>
-    <div class="main">
-        <div class="msg">提示信息</div>
-        <button class="alert-btn">确定</button>
-    </div>
-</div>
-<div class="test">
-    <button class="body">diainji
-    </button>
-    <div class="child"></div>
-    <div class="hhh" >fdsfdsf</div>
-</div>
+<div class="test"></div>
+<button class="body">body</button>
+<input type="text" placeholder="sufubo" placeholder="tang">
+
 <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 <script>
-$('.body').on('click', function () {
-    $('.alert-btn').css({
-        display: 'block',
-        width: '1000',
-        property2: 'value2'
-    });
+$('.body').on('keyup', function (e) {
+    console.log(typeof e.keyCode)
 })
 </script>
 </body>
