@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .mask {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: #ccc;
+            opacity: .5;
+        }
+    </style>
+</head>
+<body>
+<button class="test">dsd</button>
+<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    var Mask = function () {
+        this.html = '<div class="mask"><div>';
+        this.init();
+    }
+    Mask.prototype = {
+        constructor: Mask,
+
+        init: function () {
+            $('body').append(this.html);
+            $('.mask').on('click', function () {
+                $(this).remove();
+            })
+        }
+    }
+    $('.test').click(function () {
+        new Mask();
+    })
+</script>
+</body>
+</html>

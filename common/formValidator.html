@@ -1,0 +1,114 @@
+    <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            background: #E5E4DB;
+        }
+    </style>
+</head>
+<body>
+<form class="cmxform" id="commentForm" method="get" action="">
+    <p>
+      <label for="cname">Name (必需, 最小两个字母)</label>
+      <input id="cname" name="name" minlength="2" type="text">
+    </p>
+    <p>
+      <label for="cemail">E-Mail (必需)</label>
+      <input id="cemail" type="email" name="email">
+    </p>
+    <p>
+      <button class="submit">submit</button>
+    </p>
+</form>
+
+<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+<script>
+
+/**
+ * 现在是出版，只能校验必填项，后期再进行添加
+ * 大概思路就是这样
+ * @param {string} form  要校验的表单选择器
+ * @param {Object} rules 自定义校验规则
+ */
+function Validate(form, rules) {
+    this.form = $(form);
+    this.rules = rules || {
+        name: {
+            required: true
+        },
+        email: {
+            required: true
+        }
+    }
+    this.init();
+}
+
+Validate.prototype = {
+    constructor: Validate,
+
+    init: function () {
+        this.addEvent();
+    },
+
+    /**
+     * 校验函数
+     *
+     * @return {boolean} true 为校验全部通过 false 则为校验不通过
+     */
+    validate: function () {
+        var inputs = this.form.find('input');
+        var flag = true;
+
+        for (var i = 0; i < inputs.length; i++) {
+
+            // 获取到每个input元素了，给每个input元素加上校验规则
+            // 如果不符合校验规则就提示信息，符合就消除提示信息
+            var input = inputs.eq(i);
+            var val = input.val();
+            var name = input.attr('name');
+            // 假设他是符合这个顺序的校验规则
+            if (this.rules[input.attr('name')] && this.rules[name].required) { // 必填校验
+                if(!val) {
+                    var error = $('<label class="error">不能为空</label>');
+                    input.next('.error').detach();
+                    input.after(error);
+                    flag = false;
+                } else {
+                    input.next('.error').detach();
+                }
+            }
+
+        }
+
+        return flag;
+    },
+
+    addEvent: function () {
+        var me = this;
+        this.form.on('submit', function (e) {
+            e.preventDefault();
+            if (me.validate()) { // 校验通过
+                console.log('校验通过，发请求');
+            }  else { // 校验不通过
+                console.log('校验不通过，重新填写');
+            }
+        });
+
+        var inputs = this.form.find('input');
+        inputs.on('keyup', function (e) {
+            me.validate();
+        })
+
+    },
+
+
+}
+
+var validate = new Validate('#commentForm');
+</script>
+</body>
+</html>
