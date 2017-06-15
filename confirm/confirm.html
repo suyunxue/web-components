@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>弹窗组件</title>
+	<style type="text/css">
+		.confirm{
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 300px;
+			height: 200px;
+			margin-left: -150px;
+			margin-top: -100px;
+			border: 1px solid #ccc;
+			box-shadow: 0 0 5px #ccc;
+		}
+		.title {
+			height: 30px;
+			line-height: 30px;
+			padding-left: 10px;
+			background-color: #f7f7f7;
+		}
+		.footer {
+			position: absolute;
+			bottom: 5px;
+			width: 100%;
+			text-align: center;
+		}
+		.footer>button {
+			padding: 2px 15px;
+			font-size: 14px;
+			background-color: #f07600;
+			border: 1px solid #ccc;
+			color: #fff;
+			cursor: pointer;
+			outline: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="confirm">
+		<div class="title">提示</div>
+		<div class="content"></div>
+		<div class="footer">
+			<button id="confirm">确定</button>
+			<button id="cancel">取消</button>
+		</div>
+	</div>
+	<script>
+		//需求分析： 一个confirm组件。需要有确定和取消，三个部分，表头，表体，尾部
+		function Confirm(config) {
+			var config = config || {};
+			this.title = config.title || '提示';
+			this.content = config.content || '确定要删除吗？';
+
+			this.get = function(n){
+				return config[n];
+			}
+
+			this.set = function(n, v){
+				config[n] = v;
+			}
+
+			this.init();
+		}
+
+		Confirm.prototype = {
+			init: function(){
+				this.show();
+				this.bindEvent();
+			},
+
+			createHtml: function(){
+				var html = document.createElement('div');
+				html.className = 'confirm';
+				html.innerHTML = '<div class="title">'+this.title+'</div>'+
+				               '<div class="content">'+this.content+'</div>'+
+				               '<div class="footer">'+
+				                  '<button id="confirm">确定</button>'+
+				                  '<button id="cancel">取消</button>'+
+				                '</div>';
+				return html;
+			},
+
+			bindEvent: function(){
+				var confirm = document.getElementById('confirm');
+				var cancel = document.getElementById('cancel');
+				var that = this;
+
+				confirm.onclick = function(){
+					var cb = that.get(true);
+					cb && cb();
+					that.hide();
+				}
+
+				cancel.onclick = function(){
+					that.hide();
+				}	
+			},
+
+			show: function(){
+				var html = this.createHtml();
+				var body = document.getElementsByTagName('body')[0];
+				body.appendChild(html);
+			},
+
+			hide: function(){
+				var confirm = document.getElementsByClassName('confirm')[0];
+				var body = document.getElementsByTagName('body')[0];
+				body.removeChild(confirm);
+			}
+		}
+	</script>
+</body>
+</html>
