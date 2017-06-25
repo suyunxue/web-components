@@ -9,7 +9,12 @@
 <body>
 
 <div class="select-color-box">
-    <canvas id="myCanvas" width="400" height="400"></canvas>
+    <div class="select-canvas">
+        <canvas id="myCanvas" width="400" height="400"></canvas>
+        <div class="circle"></div>
+    </div>
+
+
     <div class="contorl-color">
         <div class="colorSelect"></div>
         <div class="colorBar"></div>
@@ -17,49 +22,53 @@
 
     <ul>
         <li class="input-group">
+            <div class="color-disk"></div>
+        </li>
+        <li class="input-group">
             <span class="input-group-addon">R</span>
-            <input class="form-control">
+            <input class="form-control rgb-r">
             <div class="select-up"></div>
             <div class="select-down"></div>
         </li>
         <li class="input-group">
             <span class="input-group-addon">G</span>
-            <input class="form-control">
+            <input class="form-control rgb-g">
             <div class="select-up"></div>
             <div class="select-down"></div>
         </li>
         <li class="input-group">
-            <span class="input-group-addon>B</span>
-            <input class="form-control">
+            <span class="input-group-addon">B</span>
+            <input class="form-control rgb-b">
             <div class="select-up"></div>
             <div class="select-down"></div>
         </li>
         <li class="input-group">
             <span class="input-group-addon">H</span>
-            <input class="form-control">
+            <input class="form-control hsl-h">
             <div class="select-up"></div>
             <div class="select-down"></div>
         </li>
         <li class="input-group">
             <span class="input-group-addon">S</span>
-            <input class="form-control">
+            <input class="form-control hsl-s">
             <div class="select-up"></div>
             <div class="select-down"></div>
         </li>
         <li class="input-group">
             <span class="input-group-addon">L</span>
-            <input class="form-control">
+            <input class="form-control hsl-l">
             <div class="select-up"></div>
             <div class="select-down"></div>
         </li>
     </ul>
 </div>
 
+
 <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="js/lib.js"></script>
 <script src="js/main.js"></script>
-
 <script>
+
     function fillColor() {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
@@ -84,30 +93,84 @@
         }
     }
 
-    function moveWithMouse() {
-        var flag = false;
-        var curY = 0;
+    function convertToHsv() {
+        var top = parseInt($('.colorSelect').css('top'), 10) + 6;
+        var h = + (top / parseInt($('.colorBar').height(), 10) * 360).toFixed(2);
+        var s = + (parseInt($('.circle').css('left'), 10) / parseInt($('#myCanvas').width(), 10)).toFixed(2);
+
+        var v = + (1 - parseInt($('.circle').css('top'), 10) / parseInt($('#myCanvas').height(), 10)).toFixed(2);
+
+        return {
+            h: h,
+            s: s,
+            v: v
+        }
+    }
+
+    function mouseMove(e, flag, offsetTop, offsetLeft) {
+        if (flag) {
+            var nowY = e.clientY;
+            var disY = nowY - offsetTop;
+
+            if (disY <= -6) {
+                disY = -6;
+            } else if (disY >= 394) {
+                disY = 394;
+            }
+
+            $('.colorSelect').css('top', disY);
+        }
+    }
+
+    function mouserDown(e, offsetTop, offsetLeft) {
+        var x = e.clientX - offsetLeft;
+        var y = e.clientY - offsetTop;
+
+        $('.circle').css({
+            top: y,
+            left: x
+        });
+    }
+
+    function fillColorInput() {
+        var hsv = convertToHsv();
+        var rgb = hsvToRgb(hsv.h, hsv.s, hsv.v);
+        var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+
+        console.log('rgb is: ' + rgb);
+
+        $('.hsl-h').val(hsl[0]);
+        $('.hsl-s').val(hsl[1]);
+        $('.hsl-l').val(hsl[2]);
+
+        $('.rgb-r').val(rgb[0]);
+        $('.rgb-g').val(rgb[1]);
+        $('.rgb-b').val(rgb[2]);
+
+        $('.color-disk').css('background',
+            'rgb(' + rgb[0] + ', ' + rgb[1] + ', ' + rgb[2] + ')');
+
+        return rgb;
+    }
+
+
+    function init() {
         var offsetTop = $('.colorSelect').offset().top;
+        var offsetLeft = $('.select-canvas').offset().left;
+        var flag = false;
 
         $('.colorSelect').on('mousedown', function (e) {
             flag = true;
-            curY = e.clientY;
         });
 
         $(document).on('mousemove', function (e) {
+            mouseMove(e, flag, offsetTop, offsetLeft)
+
             if (flag) {
-                var nowY = e.clientY;
-                var disY = nowY - offsetTop;
+                var rgb = fillColorInput();
+                var wantFill = fillColor();
 
-                console.log('disY is: ' + disY);
-
-                if (disY <= -6) {
-                    disY = -6;
-                } else if (disY >= 394) {
-                    disY = 394;
-                }
-
-                $('.colorSelect').css('top', disY);
+                wantFill.render('rgb(' + rgb[0] + ', ' + rgb[1] + ', ' + rgb[2] + ')');
             }
 
         });
@@ -116,12 +179,16 @@
             flag = false;
         });
 
-    }
+        $('#myCanvas').on('mousedown', function (e) {
+            mouserDown(e, offsetTop, offsetLeft);
+            fillColorInput();
+        });
 
-    function init() {
+        fillColorInput();
+
         var wantFill = fillColor();
         wantFill.render('red');
-        moveWithMouse();
+
     }
 
     init();

@@ -2,12 +2,13 @@ ul {
     list-style: none;
 }
 
-#myCanvas {
+.select-canvas {
+    position: relative;
     margin-left: 20px;
     margin-right: 20px;
 }
 
-#myCanvas,
+.select-canvas,
 .colorBar,
 ul,
 .contorl-color {
@@ -72,4 +73,20 @@ ul,
     border-top: 6px solid transparent;
     border-right: 6px solid transparent;
     border-bottom: 6px solid transparent;
+}
+
+
+.circle {
+    position: absolute;
+    top: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid red;
+}
+
+.color-disk {
+    width: 80px;
+    height: 20px;
+    margin: 0 auto;
 }
