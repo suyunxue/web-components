@@ -1,0 +1,75 @@
+ul {
+    list-style: none;
+}
+
+#myCanvas {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#myCanvas,
+.colorBar,
+ul,
+.contorl-color {
+    float: left;
+}
+
+.select-color-box {
+    margin-top: 20px;
+}
+
+.colorBar {
+    position: absolute;
+    width: 23px;
+    height: 400px;
+    margin-right: 20px;
+    background: linear-gradient(to bottom,
+        hsl(0,100%,50%), hsl(60,100%,50%), hsl(120,100%,50%), hsl(180,100%,50%),
+        hsl(240,100%,50%), hsl(300,100%,50%), hsl(360,100%,50%));
+}
+
+.input-group {
+    margin-top: 20px;
+    margin-right: 20px;
+    width: 130px;
+}
+
+.select-up:before {
+    content: "\25B2";
+}
+
+.select-down:before {
+    content: "\25BC";
+}
+
+.select-up,
+.select-down {
+    position: absolute;
+    right: 0;
+    z-index: 3;
+}
+
+.select-up {
+    top: 0;
+}
+
+.select-down {
+    bottom: 0;
+}
+
+.contorl-color {
+    position: relative;
+}
+
+.colorSelect {
+    position: absolute;
+    z-index: 2;
+    left: -6px;
+    top: -6px;
+    width: 0px;
+    height: 0px;
+    border: 6px solid red;
+    border-top: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+}
