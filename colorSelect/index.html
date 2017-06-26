@@ -13,32 +13,29 @@
         <canvas id="myCanvas" width="400" height="400"></canvas>
         <div class="circle"></div>
     </div>
-
-
     <div class="contorl-color">
         <div class="colorSelect"></div>
         <div class="colorBar"></div>
     </div>
-
     <ul>
         <li class="input-group">
             <div class="color-disk"></div>
         </li>
         <li class="input-group">
             <span class="input-group-addon">R</span>
-            <input class="form-control rgb-r">
+            <input class="form-control rgb rgb-r">
             <div class="select-up"></div>
             <div class="select-down"></div>
         </li>
         <li class="input-group">
             <span class="input-group-addon">G</span>
-            <input class="form-control rgb-g">
+            <input class="form-control rgb rgb-g">
             <div class="select-up"></div>
             <div class="select-down"></div>
         </li>
         <li class="input-group">
             <span class="input-group-addon">B</span>
-            <input class="form-control rgb-b">
+            <input class="form-control rgb rgb-b">
             <div class="select-up"></div>
             <div class="select-down"></div>
         </li>
@@ -68,7 +65,6 @@
 <script src="js/lib.js"></script>
 <script src="js/main.js"></script>
 <script>
-
     function fillColor() {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
@@ -93,12 +89,12 @@
         }
     }
 
-    function convertToHsv() {
+    function coordinateToHsv() {
         var top = parseInt($('.colorSelect').css('top'), 10) + 6;
-        var h = + (top / parseInt($('.colorBar').height(), 10) * 360).toFixed(2);
-        var s = + (parseInt($('.circle').css('left'), 10) / parseInt($('#myCanvas').width(), 10)).toFixed(2);
+        var h = top / parseInt($('.colorBar').height(), 10) * 360;
+        var s = parseInt($('.circle').css('left'), 10) / parseInt($('#myCanvas').width(), 10);
 
-        var v = + (1 - parseInt($('.circle').css('top'), 10) / parseInt($('#myCanvas').height(), 10)).toFixed(2);
+        var v = 1 - parseInt($('.circle').css('top'), 10) / parseInt($('#myCanvas').height(), 10);
 
         return {
             h: h,
@@ -107,8 +103,18 @@
         }
     }
 
-    function mouseMove(e, flag, offsetTop, offsetLeft) {
-        if (flag) {
+    function hsvToCoordinate(h, s, v) {
+        var top = h / 360 * parseInt($('.colorBar').height(), 10) - 6;
+        var canvasLeft = s * parseInt($('#myCanvas').width(), 10);
+        var canvasTop = (1 - v) * parseInt($('#myCanvas').height(), 10);
+
+        $('.colorSelect').css('top', top);
+        $('.circle').css('left', canvasLeft);
+        $('.circle').css('top', canvasTop);
+    }
+
+    function mouseMove(e, isDrag, offsetTop, offsetLeft) {
+        if (isDrag) {
             var nowY = e.clientY;
             var disY = nowY - offsetTop;
 
@@ -124,7 +130,7 @@
 
     function mouserDown(e, offsetTop, offsetLeft) {
         var x = e.clientX - offsetLeft;
-        var y = e.clientY - offsetTop;
+        var y = e.clientY - offsetTop - 5;
 
         $('.circle').css({
             top: y,
@@ -132,62 +138,127 @@
         });
     }
 
-    function fillColorInput() {
-        var hsv = convertToHsv();
-        var rgb = hsvToRgb(hsv.h, hsv.s, hsv.v);
-        var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
-
-        console.log('rgb is: ' + rgb);
-
-        $('.hsl-h').val(hsl[0]);
-        $('.hsl-s').val(hsl[1]);
-        $('.hsl-l').val(hsl[2]);
-
+    function fillRgbInput(rgb) {
         $('.rgb-r').val(rgb[0]);
         $('.rgb-g').val(rgb[1]);
         $('.rgb-b').val(rgb[2]);
+    }
 
+    function fillHslInput(hsl) {
+        $('.hsl-h').val(hsl[0]);
+        $('.hsl-s').val(hsl[1]);
+        $('.hsl-l').val(hsl[2]);
+    }
+
+    function drawColor(rgb) {
         $('.color-disk').css('background',
             'rgb(' + rgb[0] + ', ' + rgb[1] + ', ' + rgb[2] + ')');
+    }
 
+    function rgbToRender(rgb) {
+        fillColor().render('rgb(' + rgb[0] + ', ' + rgb[1] + ', ' + rgb[2] + ')');
+    }
+
+    function fillColorInput(hsl, rgb) {
+        fillRgbInput(rgb);
+        fillHslInput(hsl);
+        drawColor(rgb);
+    }
+
+    function fillInput() {
+        var hsv = coordinateToHsv();
+        var rgb = hsvToRgb(hsv.h, hsv.s, hsv.v);
+        var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+        fillColorInput(hsl, rgb);
         return rgb;
     }
 
-
-    function init() {
+    function drag() {
         var offsetTop = $('.colorSelect').offset().top;
         var offsetLeft = $('.select-canvas').offset().left;
-        var flag = false;
+        var isDrag = false;
 
         $('.colorSelect').on('mousedown', function (e) {
-            flag = true;
+            isDrag = true;
         });
 
         $(document).on('mousemove', function (e) {
-            mouseMove(e, flag, offsetTop, offsetLeft)
-
-            if (flag) {
-                var rgb = fillColorInput();
-                var wantFill = fillColor();
-
-                wantFill.render('rgb(' + rgb[0] + ', ' + rgb[1] + ', ' + rgb[2] + ')');
+            mouseMove(e, isDrag, offsetTop, offsetLeft)
+            if (isDrag) {
+                var rgb = fillInput();
+                rgbToRender(rgb);
             }
-
         });
 
         $(document).on('mouseup', function (e) {
-            flag = false;
+            isDrag = false;
         });
 
         $('#myCanvas').on('mousedown', function (e) {
             mouserDown(e, offsetTop, offsetLeft);
-            fillColorInput();
+            fillInput();
+        });
+    }
+
+    function changeRgbColor() {
+        $('.select-up').on('click', function (e) {
+            var input = $(this).prev('input');
+            var val = +input.val() + 1;
+            if (val > 255) {
+                alert('不能超过255');
+                val = 255;
+            }
+
+            input.val(val);
         });
 
-        fillColorInput();
+        $('.select-down').on('click', function (e) {
+            var input = $(this).prevAll('input');
+            var val = +input.val() - 1;
+            if (val < 0) {
+                alert('不能小于0');
+                val = 0;
+            }
 
-        var wantFill = fillColor();
-        wantFill.render('red');
+            input.val(val);
+        })
+    }
+
+
+    function init() {
+        fillColor().render('red');
+        drag();
+        changeRgbColor();
+        fillInput();
+
+        $('.form-control').on('change', function (e) {
+            var rgb = null;
+            if ($(this).hasClass('rgb')) {
+                var r = +$('.rgb-r').val();
+                var g = +$('.rgb-g').val();
+                var b = +$('.rgb-b').val();
+
+                rgb = [r, g, b];
+                var hsl = rgbToHsl(r, g, b);
+                fillHslInput(hsl);
+            } else {
+                var h = +$('.hsl-h').val();
+                var s = +$('.hsl-s').val();
+                var l = +$('.hsl-l').val();
+
+                rgb = hslToRgb(h, s, l);
+
+                fillRgbInput(rgb);
+            }
+
+            var hsv = rgbToHsv(rgb[0], rgb[1], rgb[2]);
+            hsvToCoordinate(hsv[0], hsv[1], hsv[2]);
+            drawColor(rgb);
+            rgbToRender(rgb);
+        });
+
+
+
 
     }
 
