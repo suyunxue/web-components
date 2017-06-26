@@ -256,14 +256,8 @@
         })
     }
 
-
-    function init() {
-        fillColor().render('red');
-        drag();
-        changeRgbColor();
-        fillInput();
-
-        $('.form-control').on('change', function (e) {
+    function listenInputChange() {
+         $('.form-control').on('change', function (e) {
             var rgb = null;
             if ($(this).hasClass('rgb')) {
                 var r = +$('.rgb-r').val();
@@ -280,7 +274,6 @@
                 var l = +$('.hsl-l').val();
 
                 rgb = hslToRgb(h, s, l);
-                alert(rgb);
                 fillRgbInput(rgb);
             }
 
@@ -289,10 +282,15 @@
             drawColor(rgb);
             rgbToRender(rgb);
         });
+    }
 
 
-
-
+    function init() {
+        fillColor().render('red');
+        drag();
+        changeRgbColor();
+        fillInput();
+        listenInputChange();
     }
 
     init();
