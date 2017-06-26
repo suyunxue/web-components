@@ -203,24 +203,56 @@
     function changeRgbColor() {
         $('.select-up').on('click', function (e) {
             var input = $(this).prev('input');
-            var val = +input.val() + 1;
-            if (val > 255) {
-                alert('不能超过255');
-                val = 255;
+            var val;
+            if (input.hasClass('rgb')) {
+                val = +input.val() + 1;
+                if (val > 255) {
+                    alert('不能超过255');
+                    val = 255;
+                }
+            } else if (input.hasClass('hsl-h')) {
+                val = +input.val() + 1;
+                if (val > 360) {
+                    alert('不能超过360');
+                    val = 360;
+                }
+            } else {
+                val = +input.val() + 0.01;
+                if (val > 1) {
+                    alert('不能超过1');
+                    val = 1;
+                }
             }
 
             input.val(val);
+            input.change();
         });
 
         $('.select-down').on('click', function (e) {
             var input = $(this).prevAll('input');
-            var val = +input.val() - 1;
-            if (val < 0) {
-                alert('不能小于0');
-                val = 0;
+            var val;
+            if (input.hasClass('rgb')) {
+                val = +input.val() - 1;
+                if (val < 0) {
+                    alert('不能小于0');
+                    val = 0;
+                }
+            } else if (input.hasClass('hsl-h')) {
+                val = +input.val() - 1;
+                if (val < 0) {
+                    alert('不能小于0');
+                    val = 0;
+                }
+            } else {
+                val = +input.val() - 0.01;
+                if (val < 0) {
+                    alert('不能小于0');
+                    val = 0;
+                }
             }
 
             input.val(val);
+            input.change();
         })
     }
 
@@ -242,12 +274,13 @@
                 var hsl = rgbToHsl(r, g, b);
                 fillHslInput(hsl);
             } else {
+
                 var h = +$('.hsl-h').val();
                 var s = +$('.hsl-s').val();
                 var l = +$('.hsl-l').val();
 
                 rgb = hslToRgb(h, s, l);
-
+                alert(rgb);
                 fillRgbInput(rgb);
             }
 
