@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>环形进度条</title>
+    <style>
+        .circle-process {
+            display: flex;
+        }
+        .right{
+            position: relative;
+            width: 108px;
+            height: 250px;
+            overflow: hidden;
+        }
+        .rightcircle{
+            width: 200px;
+            height: 200px;
+            border:8px solid transparent;
+            border-radius: 50%;
+            position: absolute;
+            top:0;
+            right: 0;
+            border-top:8px solid #38B99B;
+            border-right:8px solid #38B99B;
+            transform : rotate(45deg);
+            /*transform : rotate(-135deg);*/
+        }
+        .rightcircle{
+
+            -webkit-animation-name: circle_right; /* 动画名称 */
+            animation-fill-mode: forwards;
+            -webkit-animation-duration: 5s;  /* 完成一个动画需要的时间 */
+            -webkit-animation-timing-function: linear; /* 动画播放的方式，linear是匀速变化 */
+            /*-webkit-animation-iteration-count: infinite;  /* 动画播放的次数，infinite是无限次数 */
+        }
+
+        @-webkit-keyframes circle_right{
+            0%{
+                transform : rotate(-135deg);
+            }
+            100%{
+                transform : rotate(45deg);
+            }
+        }
+
+        .left {
+            position: relative;
+            width: 108px;
+            height: 250px;
+            overflow: hidden;
+        }
+        .leftcircle {
+            width: 200px;
+            height: 200px;
+            border:8px solid transparent;
+            border-radius: 50%;
+            position: absolute;
+            left:0;
+            top: 0;
+            border-left:8px solid #38B99B;
+            border-bottom:8px solid #38B99B;
+            transform : rotate(-135deg);
+            /*transform : rotate(45deg);*/
+
+            -webkit-animation-name: circle_left; /* 动画名称 */
+             animation-fill-mode: forwards;
+            -webkit-animation-duration: 5s;  /* 完成一个动画需要的时间 */
+            -webkit-animation-timing-function: linear; /* 动画播放的方式，linear是匀速变化 */
+            animation-delay: 5s;
+            /*-webkit-animation-iteration-count: infinite;  /* 动画播放的次数，infinite是无限次数 */
+        }
+
+        @-webkit-keyframes circle_left{
+            0%{
+                transform : rotate(-135deg);
+            }
+            100%{
+                transform : rotate(45deg);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="circle-process">
+        <div class="left">
+            <div class="leftcircle"></div>
+        </div>
+        <div class="right">
+            <div class="rightcircle"></div>
+        </div>
+    </div>
+
+<script></script>
+</body>
+</html>
